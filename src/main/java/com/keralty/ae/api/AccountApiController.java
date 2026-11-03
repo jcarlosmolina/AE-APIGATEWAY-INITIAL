@@ -20,6 +20,7 @@ import com.keralty.ae.security.User;
 import com.keralty.ae.utils.TokenUtilities;
 import com.keralty.ae.viewmodel.LoginRequest;
 import com.keralty.ae.viewmodel.UserInfoViewModel;
+import io.quarkus.security.UnauthorizedException;
 
 @Path("/")
 @RequestScoped
@@ -55,6 +56,9 @@ public class AccountApiController {
     @Path("/api/Account/UserInfo")
     @RolesAllowed({"Funcionario","Admin","SuperAdmin","Asesor","AreaMedica","Afiliaciones","RespRegional","Gestor","MesaDeApoyo","UsuarioSistemaExterno"})
     public UserInfoViewModel getUserInfo(@Context SecurityContext sec) {
+        if(sec != null) {
+            throw new UnauthorizedException();
+        }
     	return authenticationService.getUserInfo();
     }
     
